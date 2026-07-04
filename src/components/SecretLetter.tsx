@@ -82,9 +82,7 @@ export default function SecretLetter() {
                 </div>
               </div>
             </button>
-            <p className="text-[11px] font-mono text-rose-500/60 mt-2 text-center">
-              (Pulsa el sello para revelar la carta oculta)
-            </p>
+            {/* Removido el texto instructivo a petición del usuario */}
           </motion.div>
         )}
       </AnimatePresence>
