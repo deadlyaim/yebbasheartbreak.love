@@ -33,6 +33,12 @@ export default function FloatingHearts() {
       "rgba(253, 186, 116, ", // peach
     ];
 
+    // Optimize performance on mobile devices
+    const isMobile = window.innerWidth < 768;
+    const initialHeartCount = isMobile ? 12 : 30;
+    const maxHeartsCount = isMobile ? 18 : 50;
+    const spawnChance = isMobile ? 0.03 : 0.08;
+
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -50,7 +56,6 @@ export default function FloatingHearts() {
       opacity: number,
       colorPrefix: string
     ) => {
-      context.save();
       context.beginPath();
       // Draw heart path
       // Start from top cleft
@@ -72,30 +77,27 @@ export default function FloatingHearts() {
 
       context.closePath();
       context.fillStyle = colorPrefix + opacity + ")";
-      context.shadowBlur = size * 0.5;
-      context.shadowColor = colorPrefix + "0.3)";
       context.fill();
-      context.restore();
     };
 
     const createHeart = (initialBottom = false): Heart => {
-      const size = Math.random() * 12 + 6; // random size between 6px and 18px
+      const size = Math.random() * 10 + 6; // random size between 6px and 16px
       return {
         x: Math.random() * canvas.width,
         y: initialBottom ? canvas.height + 20 : Math.random() * canvas.height,
         size,
-        speedY: -(Math.random() * 0.6 + 0.3), // slow upward motion
-        speedX: (Math.random() - 0.5) * 0.15, // tiny default horizontal drift
-        opacity: Math.random() * 0.4 + 0.1, // faint, soft transparency
-        wiggleSpeed: Math.random() * 0.02 + 0.005,
-        wiggleWidth: Math.random() * 20 + 5,
+        speedY: -(Math.random() * 0.5 + 0.3), // slow upward motion
+        speedX: (Math.random() - 0.5) * 0.1, // tiny default horizontal drift
+        opacity: Math.random() * 0.35 + 0.1, // faint, soft transparency
+        wiggleSpeed: Math.random() * 0.015 + 0.005,
+        wiggleWidth: Math.random() * 15 + 5,
         wigglePhase: Math.random() * Math.PI * 2,
         color: colors[Math.floor(Math.random() * colors.length)],
       };
     };
 
     // Initialize with some hearts spread across the screen
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < initialHeartCount; i++) {
       hearts.push(createHeart(false));
     }
 
@@ -103,7 +105,7 @@ export default function FloatingHearts() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Spawn a new heart occasionally
-      if (hearts.length < 60 && Math.random() < 0.08) {
+      if (hearts.length < maxHeartsCount && Math.random() < spawnChance) {
         hearts.push(createHeart(true));
       }
 
