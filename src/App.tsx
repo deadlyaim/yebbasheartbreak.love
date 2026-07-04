@@ -90,9 +90,6 @@ export default function App() {
           <p className="text-[11px] font-mono text-rose-400/60 uppercase tracking-widest flex items-center gap-1 justify-center">
             Hecho con amor 🤍
           </p>
-          <p className="text-[10px] font-sans text-neutral-400">
-            {new Date().getFullYear()} • Siempre nosotros
-          </p>
         </div>
       </footer>
     </div>
